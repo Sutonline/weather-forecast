@@ -1,6 +1,7 @@
 package cn.kevin.weather.utils;
 
 import cn.kevin.weather.domain.City;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CharSource;
 import com.google.common.io.Files;
@@ -31,10 +32,12 @@ public class CityParseUtil {
                 CharSource charSource = Files.asCharSource(f, Charset.forName("UTF-8"));
                 try {
                     String content = charSource.read();
-                    List<City> cityList = new ObjectMapper().readValue(content, List.class);
+                    List<City> cityList = new ObjectMapper().readValue(content, new TypeReference<List<City>>() {});
                     if (cityList != null && ! cityList.isEmpty()) {
                         CITY_MAP = cityList.stream().collect(
-                                Collectors.toMap(City::getName, city -> city));
+                                Collectors.toMap(city -> city.getName().toLowerCase(), city -> city, (city1, city2) -> {
+                                    return city1;
+                                }));
                     }
                 } catch (IOException e) {
                     log.error("解析json格式错误", e);

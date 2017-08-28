@@ -23,7 +23,7 @@ public class WeatherServiceTest {
 
     @Test
     public void getWeather() throws Exception {
-        WeatherReport byCityId = weatherService.getByCityId("2038349", "123456");
+        WeatherReport byCityId = weatherService.getByCityId("beijing", "8f34ad7758c2d530cdbb4979a5de6d9f");
         log.info("获取结果是: {}", byCityId);
     }
 
